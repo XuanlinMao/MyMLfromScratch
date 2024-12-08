@@ -1,5 +1,5 @@
-from modules import *
-from BaseModel import BaseModel
+from .modules import *
+from .BaseModel import BaseModel
 
 class MLP(BaseModel):
     def __init__(self):
