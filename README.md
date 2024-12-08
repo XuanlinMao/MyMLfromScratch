@@ -9,6 +9,7 @@ The following models are planned to be implemented from scratch:
 * QDA
 * NaiveBayes
 * Kmeans (Kmeans++)
+* Word2Vec
 * KNN
 * SVM
 * Decision Trees (C4.5, CART)
