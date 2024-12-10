@@ -32,18 +32,12 @@ def naiveSoftmaxLossAndGradient(
                     (dJ / dU)
     """
 
-    ### YOUR CODE HERE
-
-    ### Please use the provided softmax function (imported earlier in this file)
-    ### This numerically stable implementation helps you avoid issues pertaining
-    ### to integer overflow. 
     y_hat = softmax(centerWordVec @ outsideVectors.T).squeeze()
     loss = - np.log(y_hat[outsideWordIdx])
     y = np.zeros((outsideVectors.shape[0],1))
     y[outsideWordIdx] = 1
     gradCenterVec = (y_hat.reshape(-1,1) - y).T @ outsideVectors
     gradOutsideVecs = centerWordVec * (y_hat.reshape(-1,1) - y)
-    ### END YOUR CODE
 
     return loss, gradCenterVec, gradOutsideVecs
 
@@ -86,8 +80,6 @@ def negSamplingLossAndGradient(
     negSampleWordIndices = getNegativeSamples(outsideWordIdx, dataset, K)
     # indices = [outsideWordIdx] + negSampleWordIndices
 
-    ### YOUR CODE HERE
-    ### Please use your implementation of sigmoid in here.
     dotProduct = (centerWordVec @ outsideVectors.T).squeeze()
     loss = - np.log(sigmoid(dotProduct[outsideWordIdx])).sum() - np.log(sigmoid(- dotProduct[negSampleWordIndices])).sum()
     gradCenterVec = - (1 - sigmoid(dotProduct[outsideWordIdx])) * outsideVectors[outsideWordIdx] + \
@@ -97,7 +89,6 @@ def negSamplingLossAndGradient(
     gradOutsideVecs[outsideWordIdx,:] += (- (1 - sigmoid(dotProduct[outsideWordIdx])) * centerWordVec).squeeze()
     for negIdx in negSampleWordIndices:
         gradOutsideVecs[negIdx,:] += ((1 - sigmoid(- dotProduct[negIdx])) * centerWordVec).squeeze()
-    ### END YOUR CODE
 
     return loss, gradCenterVec, gradOutsideVecs
 
@@ -137,7 +128,6 @@ def skipgram(currentCenterWord, windowSize, outsideWords, word2Ind,
     gradCenterVecs = np.zeros(centerWordVectors.shape)
     gradOutsideVectors = np.zeros(outsideVectors.shape)
 
-    ### YOUR CODE HERE
     centerWordIdx = word2Ind[currentCenterWord]
     centerWordVec = centerWordVectors[centerWordIdx,:].reshape(1,-1)
     outsideWordIdxs = [word2Ind[outsideWord] for outsideWord in outsideWords]
@@ -146,6 +136,5 @@ def skipgram(currentCenterWord, windowSize, outsideWords, word2Ind,
         loss += lossi
         gradCenterVecs[centerWordIdx, :] += gradCenterVec.squeeze()
         gradOutsideVectors += gradOutsideVecs
-    ### END YOUR CODE
 
     return loss, gradCenterVecs, gradOutsideVectors
